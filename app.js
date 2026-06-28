@@ -1,10 +1,3 @@
-const { createFFmpeg, fetchFile } = FFmpeg;
-
-const ffmpeg = createFFmpeg({
-    log: true,
-    corePath: "https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js"
-});
-
 const input = document.getElementById("videoInput");
 const preview = document.getElementById("preview");
 const result = document.getElementById("result");
@@ -16,7 +9,7 @@ const progressText = document.getElementById("progressText");
 const dropZone = document.getElementById("dropZone");
 
 let selectedFile = null;
-// Upload using file picker
+// File Upload
 input.addEventListener("change", function () {
 
     selectedFile = this.files[0];
@@ -28,18 +21,21 @@ input.addEventListener("change", function () {
 
     result.innerHTML = "✅ Video loaded successfully. Ready to convert.";
 });
-
-
 // Drag & Drop
 dropZone.addEventListener("dragover", function (e) {
 
     e.preventDefault();
+
     dropZone.style.borderColor = "#06b6d4";
+    dropZone.style.background = "#1e293b";
+
 });
 
 dropZone.addEventListener("dragleave", function () {
 
     dropZone.style.borderColor = "#4f46e5";
+    dropZone.style.background = "#111827";
+
 });
 
 dropZone.addEventListener("drop", function (e) {
@@ -47,6 +43,7 @@ dropZone.addEventListener("drop", function (e) {
     e.preventDefault();
 
     dropZone.style.borderColor = "#4f46e5";
+    dropZone.style.background = "#111827";
 
     const files = e.dataTransfer.files;
 
@@ -58,6 +55,7 @@ dropZone.addEventListener("drop", function (e) {
     preview.style.display = "block";
 
     result.innerHTML = "✅ Video loaded successfully. Ready to convert.";
+
 });
 async function convertGIF() {
 
@@ -68,74 +66,26 @@ async function convertGIF() {
 
     progressBox.style.display = "block";
     progressBar.style.width = "5%";
-    progressText.innerHTML = "Loading FFmpeg...";
-
-    try {
-
-        if (!ffmpeg.isLoaded()) {
-            await ffmpeg.load();
-        }
-
-    } catch (err) {
-
-        result.innerHTML = "❌ Failed to load FFmpeg.<br><br>" + err.message;
-        console.error(err);
-        return;
-
-    }
-
-    progressBar.style.width = "25%";
     progressText.innerHTML = "Preparing video...";
+        const video = document.createElement("video");
 
-    ffmpeg.FS(
-        "writeFile",
-        "input.mp4",
-        await fetchFile(selectedFile)
-    );
+    video.src = URL.createObjectURL(selectedFile);
 
-    progressBar.style.width = "60%";
-    progressText.innerHTML = "Converting video...";
-        await ffmpeg.run(
-        "-i",
-        "input.mp4",
-        "-vf",
-        "fps=10,scale=320:-1:flags=lanczos",
-        "-loop",
-        "0",
-        "output.gif"
-    );
+    video.muted = true;
+    video.playsInline = true;
 
-    progressBar.style.width = "90%";
-    progressText.innerHTML = "Creating GIF...";
+    await new Promise((resolve) => {
 
-    const data = ffmpeg.FS("readFile", "output.gif");
+        video.onloadedmetadata = resolve;
 
-    const gifUrl = URL.createObjectURL(
-        new Blob([data.buffer], { type: "image/gif" })
-    );
+    });
 
-    progressBar.style.width = "100%";
-    progressText.innerHTML = "Completed ✅";
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
-    result.innerHTML = `
-        <h3>✅ Conversion Completed!</h3>
+    canvas.width = 320;
+    canvas.height = Math.round(video.videoHeight * (320 / video.videoWidth));
 
-        <img src="${gifUrl}"
-             style="max-width:100%;border-radius:12px;margin:20px 0;">
-
-        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-
-            <a href="${gifUrl}"
-               download="converted.gif"
-               style="padding:12px 22px;background:#06b6d4;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">
-                ⬇ Download GIF
-            </a>
-
-            <button onclick="location.reload()"
-                style="padding:12px 22px;background:#4f46e5;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">
-                🔄 Convert Another Video
-            </button>
-
-        </div>
-    `;
-                          }
+    progressBar.style.width = "15%";
+    progressText.innerHTML = "Creating GIF encoder...";
+    
