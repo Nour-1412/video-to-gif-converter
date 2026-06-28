@@ -74,8 +74,10 @@ async function convertGIF() {
     progressText.innerHTML = "Loading FFmpeg...";
 
     if (!ffmpeg.isLoaded()) {
-        await ffmpeg.load();
-    }
+    result.innerHTML = "⏳ Loading FFmpeg...";
+    await ffmpeg.load();
+    result.innerHTML = "✅ FFmpeg loaded successfully.";
+}
 
     progressBar.style.width = "35%";
     progressText.innerHTML = "Preparing video...";
