@@ -1,0 +1,463 @@
+/* =========================================
+   WebBag Video to GIF Converter
+   Professional UI
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    background:#0b1220;
+
+    color:#ffffff;
+
+    line-height:1.6;
+
+}
+
+/* ===========================
+        HEADER
+=========================== */
+
+header{
+
+    background:linear-gradient(135deg,#4f46e5,#06b6d4);
+
+    padding:60px 20px;
+
+    text-align:center;
+
+}
+
+header h1{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+header p{
+
+    font-size:18px;
+
+    opacity:.9;
+
+    max-width:700px;
+
+    margin:auto;
+
+}
+
+/* ===========================
+      MAIN CONTAINER
+=========================== */
+
+.container{
+
+    width:90%;
+
+    max-width:1000px;
+
+    margin:40px auto;
+
+}
+
+/* ===========================
+         CARD
+=========================== */
+
+.card{
+
+    background:#111827;
+
+    border-radius:18px;
+
+    padding:35px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.35);
+
+}
+
+/* ===========================
+      SECTION TITLE
+=========================== */
+
+.section-title{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    margin-bottom:20px;
+
+}
+
+/* ===========================
+       LABELS
+=========================== */
+
+label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+}
+
+/* ===========================
+      INPUTS
+=========================== */
+
+input[type="number"],
+select{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-top:6px;
+
+    margin-bottom:18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#1f2937;
+
+    color:#ffffff;
+
+    outline:none;
+
+    transition:.3s;
+
+}
+
+input[type="number"]:focus,
+select:focus{
+
+    box-shadow:0 0 0 2px #06b6d4;
+
+  }
+/* ===========================
+      DRAG & DROP AREA
+=========================== */
+
+#dropZone{
+
+    width:100%;
+
+    padding:45px 25px;
+
+    border:2px dashed #4f46e5;
+
+    border-radius:16px;
+
+    background:#1f2937;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+#dropZone:hover{
+
+    border-color:#06b6d4;
+
+    transform:translateY(-2px);
+
+}
+
+#dropZone p{
+
+    margin:10px 0;
+
+    color:#d1d5db;
+
+}
+
+/* ===========================
+        BUTTONS
+=========================== */
+
+button{
+
+    background:#06b6d4;
+
+    color:#fff;
+
+    border:none;
+
+    padding:14px 26px;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    background:#0891b2;
+
+    transform:translateY(-2px);
+
+}
+
+button:active{
+
+    transform:scale(.98);
+
+}
+
+/* ===========================
+      VIDEO PREVIEW
+=========================== */
+
+video{
+
+    width:100%;
+
+    margin-top:25px;
+
+    border-radius:12px;
+
+    display:none;
+
+    background:#000;
+
+}
+
+/* ===========================
+      RESULT IMAGE
+=========================== */
+
+#result img{
+
+    width:100%;
+
+    border-radius:12px;
+
+    margin:20px 0;
+
+}
+
+/* ===========================
+      PROGRESS BAR
+=========================== */
+
+#progressBox{
+
+    display:none;
+
+    margin-top:25px;
+
+}
+
+#progressBar{
+
+    width:0%;
+
+    height:12px;
+
+    background:#06b6d4;
+
+    border-radius:20px;
+
+    transition:width .4s ease;
+
+}
+
+#progressText{
+
+    margin-top:10px;
+
+    text-align:center;
+
+    color:#d1d5db;
+
+    font-size:14px;
+
+}
+/* ===========================
+         FEATURES
+=========================== */
+
+.features{
+
+    max-width:1100px;
+
+    margin:60px auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:25px;
+
+}
+
+.feature{
+
+    background:#111827;
+
+    border-radius:16px;
+
+    padding:25px;
+
+    transition:.3s;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.feature:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.4);
+
+}
+
+.feature h3{
+
+    margin-bottom:12px;
+
+    font-size:20px;
+
+}
+
+.feature p{
+
+    color:#cbd5e1;
+
+    line-height:1.8;
+
+}
+
+/* ===========================
+        DOWNLOAD LINK
+=========================== */
+
+#result a{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:14px 24px;
+
+    background:#06b6d4;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    border-radius:10px;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+#result a:hover{
+
+    background:#0891b2;
+
+    transform:translateY(-2px);
+
+}
+
+/* ===========================
+         ANIMATION
+=========================== */
+
+.card,
+.feature{
+
+    animation:fadeIn .6s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===========================
+        RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    header{
+
+        padding:45px 20px;
+
+    }
+
+    header h1{
+
+        font-size:30px;
+
+    }
+
+    header p{
+
+        font-size:16px;
+
+    }
+
+    .card{
+
+        padding:20px;
+
+    }
+
+    button{
+
+        width:100%;
+
+    }
+
+      }
