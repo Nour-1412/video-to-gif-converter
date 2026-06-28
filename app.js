@@ -78,3 +78,54 @@ async function convertGIF() {
 
     progressBar.style.width = "35%";
     progressText.innerHTML = "Preparing video...";
+    ffmpeg.FS(
+        "writeFile",
+        "input.mp4",
+        await fetchFile(selectedFile)
+    );
+
+    progressBar.style.width = "60%";
+    progressText.innerHTML = "Converting video...";
+
+    await ffmpeg.run(
+        "-i",
+        "input.mp4",
+        "-vf",
+        "fps=10,scale=320:-1",
+        "output.gif"
+    );
+
+    progressBar.style.width = "90%";
+    progressText.innerHTML = "Creating GIF...";
+
+    const data = ffmpeg.FS("readFile", "output.gif");
+
+    const gifUrl = URL.createObjectURL(
+        new Blob([data.buffer], { type: "image/gif" })
+    );
+
+    progressBar.style.width = "100%";
+    progressText.innerHTML = "Completed ✅";
+
+    result.innerHTML = `
+        <h3>✅ Conversion Completed!</h3>
+
+        <img src="${gifUrl}"
+             style="max-width:100%; border-radius:12px; margin:15px 0;">
+
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+
+            <a href="${gifUrl}"
+               download="converted.gif"
+               style="padding:12px 22px; background:#06b6d4; color:#fff; text-decoration:none; border-radius:8px; font-weight:bold;">
+                ⬇ Download GIF
+            </a>
+
+            <button onclick="location.reload()"
+                style="padding:12px 22px; background:#4f46e5; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">
+                🔄 Convert Another Video
+            </button>
+
+        </div>
+    `;
+}
