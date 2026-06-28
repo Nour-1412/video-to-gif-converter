@@ -25,7 +25,14 @@ async function convertGIF() {
         result.innerHTML = "⚠️ Please upload a video first.";
         return;
     }
+const progressBox = document.getElementById("progressBox");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
 
+progressBox.style.display = "block";
+
+progressBar.style.width = "10%";
+progressText.innerHTML = "Loading FFmpeg...";
     const quality = document.getElementById("quality")?.value || 10;
     const start = document.getElementById("startTime")?.value;
     const end = document.getElementById("endTime")?.value;
