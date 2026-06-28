@@ -52,46 +52,24 @@ progressText.innerHTML = "Loading FFmpeg...";
     }
     
 
-    result.innerHTML = "⚙️ Converting video...";
+  result.innerHTML = `
+    <h3>✅ Conversion Completed!</h3>
 
-    ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(selectedFile));
+    <img src="${gifUrl}"
+         style="max-width:100%; border-radius:12px; margin:15px 0;">
 
-    let args = [
-        '-i', 'input.mp4',
-        '-vf', `fps=${quality},scale=320:-1`
-    ];
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
 
-    if (start) {
-        args.unshift('-ss', start);
-    }
-
-    if (end) {
-        args.push('-to', end);
-    }
-
-    args.push('output.gif');
-
-    progressBar.style.width = "60%";
-progressText.innerHTML = "Converting video...";
-
-await ffmpeg.run(...args);
-
-progressBar.style.width = "90%";
-progressText.innerHTML = "Creating GIF...";
-
-    const data = ffmpeg.FS('readFile', 'output.gif');
-
-    const gifUrl = URL.createObjectURL(
-        new Blob([data.buffer], { type: 'image/gif' })
-    );
-progressBar.style.width = "100%";
-progressText.innerHTML = "Completed ✅";
-    result.innerHTML = `
-        🎉 Conversion Completed!<br><br>
-        <img src="${gifUrl}" style="max-width:100%; border-radius:10px;"><br><br>
-        <a href="${gifUrl}" download="converted.gif"
-           style="display:inline-block;padding:10px 20px;background:#06b6d4;color:white;text-decoration:none;border-radius:8px;">
-           ⬇ Download GIF
+        <a href="${gifUrl}"
+           download="converted.gif"
+           style="padding:12px 22px; background:#06b6d4; color:#fff; text-decoration:none; border-radius:8px; font-weight:bold;">
+            ⬇ Download GIF
         </a>
-    `;
-}
+
+        <button onclick="location.reload()"
+            style="padding:12px 22px; background:#4f46e5; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">
+            🔄 Convert Another Video
+        </button>
+
+    </div>
+`;  
