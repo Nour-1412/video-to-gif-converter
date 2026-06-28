@@ -8,55 +8,56 @@ const ffmpeg = createFFmpeg({
 const input = document.getElementById("videoInput");
 const preview = document.getElementById("preview");
 const result = document.getElementById("result");
+
+const progressBox = document.getElementById("progressBox");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+
 const dropZone = document.getElementById("dropZone");
 
 let selectedFile = null;
-// Select video
+// Upload using file picker
 input.addEventListener("change", function () {
 
     selectedFile = this.files[0];
 
-    if (selectedFile) {
+    if (!selectedFile) return;
 
-        preview.src = URL.createObjectURL(selectedFile);
-        preview.style.display = "block";
+    preview.src = URL.createObjectURL(selectedFile);
+    preview.style.display = "block";
 
-        result.innerHTML = "✅ Video loaded successfully. Ready to convert.";
-
-    }
-
+    result.innerHTML = "✅ Video loaded successfully. Ready to convert.";
 });
-// Drag & Drop Support
 
+
+// Drag & Drop
 dropZone.addEventListener("dragover", function (e) {
+
     e.preventDefault();
     dropZone.style.borderColor = "#06b6d4";
-    dropZone.style.background = "#1e293b";
 });
 
 dropZone.addEventListener("dragleave", function () {
+
     dropZone.style.borderColor = "#4f46e5";
-    dropZone.style.background = "#1f2937";
 });
 
 dropZone.addEventListener("drop", function (e) {
+
     e.preventDefault();
 
     dropZone.style.borderColor = "#4f46e5";
-    dropZone.style.background = "#1f2937";
 
     const files = e.dataTransfer.files;
 
-    if (files.length > 0) {
+    if (!files.length) return;
 
-        selectedFile = files[0];
+    selectedFile = files[0];
 
-        preview.src = URL.createObjectURL(selectedFile);
-        preview.style.display = "block";
+    preview.src = URL.createObjectURL(selectedFile);
+    preview.style.display = "block";
 
-        result.innerHTML = "✅ Video loaded successfully. Ready to convert.";
-
-    }
+    result.innerHTML = "✅ Video loaded successfully. Ready to convert.";
 });
 async function convertGIF() {
 
@@ -65,22 +66,27 @@ async function convertGIF() {
         return;
     }
 
-    const progressBox = document.getElementById("progressBox");
-    const progressBar = document.getElementById("progressBar");
-    const progressText = document.getElementById("progressText");
-
     progressBox.style.display = "block";
-    progressBar.style.width = "10%";
+    progressBar.style.width = "5%";
     progressText.innerHTML = "Loading FFmpeg...";
 
-    if (!ffmpeg.isLoaded()) {
-    result.innerHTML = "⏳ Loading FFmpeg...";
-    await ffmpeg.load();
-    result.innerHTML = "✅ FFmpeg loaded successfully.";
-}
+    try {
 
-    progressBar.style.width = "35%";
+        if (!ffmpeg.isLoaded()) {
+            await ffmpeg.load();
+        }
+
+    } catch (err) {
+
+        result.innerHTML = "❌ Failed to load FFmpeg.<br><br>" + err.message;
+        console.error(err);
+        return;
+
+    }
+
+    progressBar.style.width = "25%";
     progressText.innerHTML = "Preparing video...";
+
     ffmpeg.FS(
         "writeFile",
         "input.mp4",
@@ -89,12 +95,13 @@ async function convertGIF() {
 
     progressBar.style.width = "60%";
     progressText.innerHTML = "Converting video...";
-
-    await ffmpeg.run(
+        await ffmpeg.run(
         "-i",
         "input.mp4",
         "-vf",
-        "fps=10,scale=320:-1",
+        "fps=10,scale=320:-1:flags=lanczos",
+        "-loop",
+        "0",
         "output.gif"
     );
 
@@ -109,26 +116,26 @@ async function convertGIF() {
 
     progressBar.style.width = "100%";
     progressText.innerHTML = "Completed ✅";
+
     result.innerHTML = `
         <h3>✅ Conversion Completed!</h3>
 
         <img src="${gifUrl}"
-             style="max-width:100%; border-radius:12px; margin:20px 0;" />
+             style="max-width:100%;border-radius:12px;margin:20px 0;">
 
-        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
 
             <a href="${gifUrl}"
                download="converted.gif"
-               style="padding:12px 22px; background:#06b6d4; color:#fff; text-decoration:none; border-radius:8px; font-weight:bold;">
+               style="padding:12px 22px;background:#06b6d4;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">
                 ⬇ Download GIF
             </a>
 
             <button onclick="location.reload()"
-                style="padding:12px 22px; background:#4f46e5; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">
+                style="padding:12px 22px;background:#4f46e5;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:bold;">
                 🔄 Convert Another Video
             </button>
 
         </div>
     `;
-}
-    
+                          }
