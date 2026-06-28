@@ -40,8 +40,17 @@ progressText.innerHTML = "Loading FFmpeg...";
     result.innerHTML = "⏳ Loading converter...";
 
     if (!ffmpeg.isLoaded()) {
-        await ffmpeg.load();
+
+    progressBar.style.width = "20%";
+    progressText.innerHTML = "Loading FFmpeg...";
+
+    await ffmpeg.load();
+
+    progressBar.style.width = "35%";
+    progressText.innerHTML = "Preparing video...";
+
     }
+    
 
     result.innerHTML = "⚙️ Converting video...";
 
@@ -62,14 +71,21 @@ progressText.innerHTML = "Loading FFmpeg...";
 
     args.push('output.gif');
 
-    await ffmpeg.run(...args);
+    progressBar.style.width = "60%";
+progressText.innerHTML = "Converting video...";
+
+await ffmpeg.run(...args);
+
+progressBar.style.width = "90%";
+progressText.innerHTML = "Creating GIF...";
 
     const data = ffmpeg.FS('readFile', 'output.gif');
 
     const gifUrl = URL.createObjectURL(
         new Blob([data.buffer], { type: 'image/gif' })
     );
-
+progressBar.style.width = "100%";
+progressText.innerHTML = "Completed ✅";
     result.innerHTML = `
         🎉 Conversion Completed!<br><br>
         <img src="${gifUrl}" style="max-width:100%; border-radius:10px;"><br><br>
