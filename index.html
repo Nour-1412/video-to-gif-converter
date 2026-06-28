@@ -108,7 +108,12 @@ Convert any video into a high-quality animated GIF in seconds. No software requi
 
     <input type="file" id="videoInput" accept="video/*"
         style="width:100%; padding:15px; background:#1f2937; color:white; border-radius:10px; border:none;">
+if (file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
 
+    result.innerHTML = "✅ Video loaded successfully.";
+}
     <!-- VIDEO PREVIEW -->
     <video id="preview" controls
         style="width:100%; margin-top:20px; border-radius:10px; display:none;"></video>
