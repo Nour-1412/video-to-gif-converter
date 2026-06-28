@@ -57,3 +57,24 @@ dropZone.addEventListener("drop", function (e) {
 
     }
 });
+async function convertGIF() {
+
+    if (!selectedFile) {
+        result.innerHTML = "⚠️ Please upload a video first.";
+        return;
+    }
+
+    const progressBox = document.getElementById("progressBox");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+
+    progressBox.style.display = "block";
+    progressBar.style.width = "10%";
+    progressText.innerHTML = "Loading FFmpeg...";
+
+    if (!ffmpeg.isLoaded()) {
+        await ffmpeg.load();
+    }
+
+    progressBar.style.width = "35%";
+    progressText.innerHTML = "Preparing video...";
