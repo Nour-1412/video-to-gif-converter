@@ -106,7 +106,28 @@ async function convertGIF() {
 
     progressBar.style.width = "100%";
     progressText.innerHTML = "Completed ✅";
+    result.innerHTML = `
+        <h3>✅ Conversion Completed!</h3>
 
+        <img src="${gifUrl}"
+             style="max-width:100%; border-radius:12px; margin:20px 0;" />
+
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+
+            <a href="${gifUrl}"
+               download="converted.gif"
+               style="padding:12px 22px; background:#06b6d4; color:#fff; text-decoration:none; border-radius:8px; font-weight:bold;">
+                ⬇ Download GIF
+            </a>
+
+            <button onclick="location.reload()"
+                style="padding:12px 22px; background:#4f46e5; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">
+                🔄 Convert Another Video
+            </button>
+
+        </div>
+    `;
+}
     result.innerHTML = `
         <h3>✅ Conversion Completed!</h3>
 
