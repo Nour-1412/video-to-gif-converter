@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ح<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -160,10 +160,13 @@ const input = document.getElementById("videoInput");
 const preview = document.getElementById("preview");
 const result = document.getElementById("result");
 
+let selectedFile = null;
+
 input.addEventListener("change", function () {
-    const file = this.files[0];
-    if (file) {
-        preview.src = URL.createObjectURL(file);
+    selectedFile = this.files[0];
+
+    if (selectedFile) {
+        preview.src = URL.createObjectURL(selectedFile);
         preview.style.display = "block";
     }
 });
@@ -183,11 +186,12 @@ function convertGIF() {
 
         result.innerHTML = `
             🎉 Conversion Done (Demo Mode)<br><br>
-            <img src="${gifUrl}" style="max-width:100%; border-radius:10px;" /><br><br>
-            <a href="${gifUrl}" download="converted.gif"
+            <video src="${gifUrl}" controls style="max-width:100%; border-radius:10px;"></video><br><br>
+            <a href="${gifUrl}" download="converted.mp4"
                style="display:inline-block; padding:10px 20px; background:#06b6d4; color:white; text-decoration:none; border-radius:8px;">
                ⬇ Download File
             </a>
         `;
     }, 1500);
 }
+</script>
