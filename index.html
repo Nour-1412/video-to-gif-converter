@@ -181,25 +181,6 @@ if (file) {
 
 </div>
 
-    <script>
-const input = document.getElementById("videoInput");
-const preview = document.getElementById("preview");
-const result = document.getElementById("result");
-
-input.addEventListener("change", function () {
-    const file = this.files[0];
-
-    if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = "block";
-    }
-});
-
-function convertGIF() {
-
-    result.innerHTML = "⚠️ Demo mode only. No real conversion yet.";
-}
-</script>
 
 <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <script src="app.js"></script>
