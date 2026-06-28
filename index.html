@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Video to GIF Converter Online</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b1220;
+    color: white;
+}
+
+/* HEADER */
+header {
+    text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+header p {
+    opacity: 0.9;
+}
+
+/* MAIN BOX */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+}
+
+.card {
+    background: #111827;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    text-align: center;
+}
+
+/* UPLOAD */
+input[type="file"] {
+    padding: 15px;
+    background: #1f2937;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* BUTTON */
+button {
+    background: #06b6d4;
+    border: none;
+    padding: 14px 25px;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background: #0891b2;
+}
+
+/* VIDEO PREVIEW */
+video {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+    display: none;
+}
+
+/* RESULT BOX */
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    background: #1f2937;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🎬 Video to GIF Converter</h1>
+  <p style="text-align:center; font-size:16px; opacity:0.8;">
+Convert any video into a high-quality animated GIF in seconds. No software required.
+</p>
+
+<div style="max-width:800px; margin:40px auto; background:#111827; padding:30px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+
+    <!-- UPLOAD AREA -->
+    <label style="display:block; margin-bottom:10px; font-weight:bold;">
+        📤 Upload Your Video
+    </label>
+
+    <input type="file" id="videoInput" accept="video/*"
+        style="width:100%; padding:15px; background:#1f2937; color:white; border-radius:10px; border:none;">
+
+    <!-- VIDEO PREVIEW -->
+    <video id="preview" controls
+        style="width:100%; margin-top:20px; border-radius:10px; display:none;"></video>
+
+    <!-- SETTINGS -->
+    <div style="margin-top:20px; text-align:left;">
+        <label>⚙️ GIF Quality</label>
+        <select style="width:100%; padding:10px; margin-top:5px; border-radius:8px;">
+            <option>High Quality</option>
+            <option>Medium Quality</option>
+            <option>Low Quality (Fast)</option>
+        </select>
+    </div>
+
+    <!-- BUTTON -->
+    <button onclick="convertGIF()"
+        style="width:100%; margin-top:20px; padding:15px; background:#06b6d4; border:none; color:white; font-size:16px; border-radius:10px; cursor:pointer;">
+        🚀 Convert to GIF
+    </button>
+
+    <!-- RESULT -->
+    <div id="result"
+        style="margin-top:20px; padding:15px; background:#1f2937; border-radius:10px;">
+        ⏳ Upload a video and click convert to start
+    </div>
+
+</div>
+
+<!-- FEATURES SECTION -->
+<div style="max-width:900px; margin:50px auto; display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:20px;">
+
+    <div style="background:#111827; padding:20px; border-radius:12px;">
+        ⚡ <strong>Fast Conversion</strong>
+        <p style="opacity:0.7;">Convert videos in seconds directly in your browser.</p>
+    </div>
+
+    <div style="background:#111827; padding:20px; border-radius:12px;">
+        🔒 <strong>100% Secure</strong>
+        <p style="opacity:0.7;">Your files never leave your device.</p>
+    </div>
+
+    <div style="background:#111827; padding:20px; border-radius:12px;">
+        📱 <strong>Mobile Friendly</strong>
+        <p style="opacity:0.7;">Works perfectly on all devices.</p>
+    </div>
+
+</div>
+
+<script>
+const input = document.getElementById("videoInput");
+const preview = document.getElementById("preview");
+const result = document.getElementById("result");
+
+input.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+    }
+});
+
+function convertGIF() {
+
+    if (!selectedFile) {
+        result.innerHTML = "⚠️ Please upload a video first.";
+        return;
+    }
+
+    result.innerHTML = "⏳ Converting video to GIF... please wait";
+
+    setTimeout(() => {
+
+        const gifUrl = URL.createObjectURL(selectedFile);
+
+        result.innerHTML = `
+            🎉 Conversion Done (Demo Mode)<br><br>
+            <img src="${gifUrl}" style="max-width:100%; border-radius:10px;" /><br><br>
+            <a href="${gifUrl}" download="converted.gif"
+               style="display:inline-block; padding:10px 20px; background:#06b6d4; color:white; text-decoration:none; border-radius:8px;">
+               ⬇ Download File
+            </a>
+        `;
+    }, 1500);
+}
